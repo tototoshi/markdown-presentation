@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = {
   // https://github.com/webpack/webpack-dev-server/issues/2758
@@ -43,8 +44,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/index.html",
     }),
+    new ForkTsCheckerWebpackPlugin(),
     new CopyWebpackPlugin({
-      patterns: [{ from: path.resolve(__dirname, "assets"), to: path.resolve(__dirname, "dist") }],
+      patterns: [
+        {
+          from: path.resolve(__dirname, "assets"),
+          to: path.resolve(__dirname, "dist"),
+        },
+      ],
     }),
   ],
   resolve: {
