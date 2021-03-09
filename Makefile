@@ -9,7 +9,6 @@ install:
 	npm install
 
 serve:
-	npx tsc -w &
 	npx webpack serve
 
 clean:
