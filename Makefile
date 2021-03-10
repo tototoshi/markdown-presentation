@@ -1,13 +1,15 @@
+CMD := ./bin/markdown-presentation.js
+
 .PHONY: install build serve clean fmt
 
 build:
-	npx webpack
+	$(CMD) --write source.md
 
 install:
 	npm install
 
 serve:
-	./bin/markdown-presentation.js source.md
+	$(CMD) source.md
 
 clean:
 	rm -rf dist/
