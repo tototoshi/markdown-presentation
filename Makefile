@@ -7,7 +7,7 @@ install:
 	npm install
 
 serve:
-	npx webpack serve
+	./bin/markdown-presentation.js source.md
 
 clean:
 	rm -rf dist/

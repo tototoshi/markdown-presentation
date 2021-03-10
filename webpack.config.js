@@ -14,7 +14,7 @@ module.exports = {
   devServer: {
     contentBase: path.resolve(__dirname, "dist"),
     watchContentBase: true,
-    hot: false
+    hot: false,
   },
   module: {
     rules: [
