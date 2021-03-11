@@ -33,7 +33,7 @@ function getBaseConfig() {
     // In webpack-dev-server@3, there is a bug causing it to mis-judge the runtime environment when the Webpack 5 browserslist target is used.
     target: "web",
     mode: "development",
-    entry: "./src/index.tsx",
+    entry: "./src/index.ts",
     devtool: "inline-source-map",
     module: {
       rules: [
