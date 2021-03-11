@@ -1,5 +1,5 @@
 {
-  "name": "markdown-presentation",
+  "name": "@tototoshi/markdown-presentation",
   "version": "0.1.0-SNAPSHOT",
   "bin": {
     "markdown-presentation": "bin/markdown-presentation.js"
@@ -10,6 +10,7 @@
     "@babel/preset-typescript": "^7.13.0",
     "@types/marked": "^2.0.0",
     "@types/socket.io-client": "^1.4.35",
+    "apache2-license-checker": "^1.0.0",
     "babel-loader": "^8.2.2",
     "commander": "^7.1.0",
     "copy-webpack-plugin": "^8.0.0",
@@ -31,5 +32,20 @@
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "description": "https://tototoshi.github.io/markdown-presentation/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tototoshi/markdown-presentation.git"
+  },
+  "author": "Toshiyuki Takahashi",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/tototoshi/markdown-presentation/issues"
+  },
+  "homepage": "https://github.com/tototoshi/markdown-presentation"
 }
