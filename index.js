@@ -18,61 +18,69 @@ const readFile = require("./serve/readFile");
 const app = express();
 const server = http.createServer(app);
 
-const baseConfig = {
-  // https://github.com/webpack/webpack-dev-server/issues/2758
-  // https://github.com/pmmmwh/react-refresh-webpack-plugin/blob/main/docs/TROUBLESHOOTING.md#webpack-5-compatibility-issues-with-webpack-dev-server3
-  // In webpack-dev-server@3, there is a bug causing it to mis-judge the runtime environment when the Webpack 5 browserslist target is used.
-  target: "web",
-  mode: "development",
-  entry: "./src/index.tsx",
-  devtool: "inline-source-map",
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        include: path.resolve(__dirname, "src"),
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env", "@babel/preset-typescript"],
+function getBaseConfig() {
+  const assetsDir = path.resolve("assets");
+  const outDir = path.resolve("dist");
+
+  const copyPlugin = fs.existsSync(assetsDir)
+    ? [new CopyWebpackPlugin({ patterns: [{ from: assetsDir, to: outDir }] })]
+    : [];
+
+  return {
+    context: __dirname,
+    // https://github.com/webpack/webpack-dev-server/issues/2758
+    // https://github.com/pmmmwh/react-refresh-webpack-plugin/blob/main/docs/TROUBLESHOOTING.md#webpack-5-compatibility-issues-with-webpack-dev-server3
+    // In webpack-dev-server@3, there is a bug causing it to mis-judge the runtime environment when the Webpack 5 browserslist target is used.
+    target: "web",
+    mode: "development",
+    entry: "./src/index.tsx",
+    devtool: "inline-source-map",
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          include: path.resolve(__dirname, "src"),
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              cwd: __dirname,
+              presets: ["@babel/preset-env", "@babel/preset-typescript"],
+            },
           },
         },
-      },
-      {
-        test: /\.md$/,
-        type: "asset/source",
-      },
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
-    ],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./src/index.html",
-    }),
-    new ForkTsCheckerWebpackPlugin(),
-    new CopyWebpackPlugin({
-      patterns: [
         {
-          from: path.resolve(__dirname, "assets"),
-          to: path.resolve(__dirname, "dist"),
+          test: /\.md$/,
+          type: "asset/source",
+        },
+        {
+          test: /\.css$/,
+          use: ["style-loader", "css-loader"],
         },
       ],
-    }),
-  ],
-  resolve: {
-    extensions: [".tsx", ".ts", ".jsx", ".js"],
-  },
-};
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: "./src/index.html",
+      }),
+      new ForkTsCheckerWebpackPlugin(),
+      ...copyPlugin,
+    ],
+    resolve: {
+      extensions: [".tsx", ".ts", ".jsx", ".js"],
+    },
+  };
+}
 
-function build(filename) {
+function build(outputPath, filename) {
+  const baseConfig = getBaseConfig();
   const config = {
     ...baseConfig,
     target: "browserslist",
     mode: "production",
+    output: {
+      path: outputPath,
+    },
     plugins: [
       ...baseConfig.plugins,
       new webpack.ProvidePlugin({
@@ -91,9 +99,13 @@ function build(filename) {
   });
 }
 
-function runServer(port, filename) {
+function runServer(outputPath, port, filename, writeToDisk) {
+  const baseConfig = getBaseConfig();
   const config = {
     ...baseConfig,
+    output: {
+      path: outputPath,
+    },
     plugins: [
       ...baseConfig.plugins,
       new webpack.EntryPlugin(__dirname, require.resolve("./client/client"), {
@@ -117,7 +129,11 @@ function runServer(port, filename) {
     fsEvents.emit(FS_EVENT_CONTENT_CHANGED, readFile(filename));
   });
 
-  app.use(middleware(compiler, {}));
+  app.use(
+    middleware(compiler, {
+      writeToDisk,
+    })
+  );
 
   const io = require("socket.io")(server);
 
@@ -150,12 +166,13 @@ function main() {
       DEFAULT_PORT
     )
     .option("-w, --write", "Write files")
-
+    .option("-s, --serve", "Run dev server")
     .arguments("<filename>")
     .parse(process.argv);
   const options = program.opts();
   const port = parseInt(options.port);
   const write = options.write || false;
+  const serve = options.serve || false;
 
   if (program.args.length === 1) {
     const cwd = process.cwd();
@@ -166,12 +183,12 @@ function main() {
       process.exit(1);
     }
 
-    process.chdir(__dirname);
+    const outputPath = path.resolve("dist");
 
-    if (write) {
-      build(filename);
+    if (serve) {
+      runServer(outputPath, port, filename, write);
     } else {
-      runServer(port, filename);
+      build(outputPath, filename);
     }
   } else {
     program.help();
