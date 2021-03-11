@@ -40,7 +40,6 @@ function getBaseConfig() {
         {
           test: /\.tsx?$/,
           include: path.resolve(__dirname, "src"),
-          exclude: /node_modules/,
           use: {
             loader: "babel-loader",
             options: {
