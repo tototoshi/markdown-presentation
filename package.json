@@ -13,7 +13,7 @@
     "babel-loader": "^8.2.2",
     "commander": "^4.1.1",
     "copy-webpack-plugin": "^8.0.0",
-    "css-loader": "^5.1.1",
+    "css-loader": "^5.1.2",
     "events": "^3.3.0",
     "fork-ts-checker-webpack-plugin": "^6.1.1",
     "highlight.js": "^10.6.0",
