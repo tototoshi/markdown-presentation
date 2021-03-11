@@ -1,5 +1,5 @@
 function isHeaderLine(line: string): boolean {
-  return line.match(/##[^#]/) !== null || line.match(/#[^#]/) !== null;
+  return line.match(/^#{1,2}[^#]/) !== null;
 }
 
 export default function parse(md: string): string[] {
