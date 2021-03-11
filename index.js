@@ -158,7 +158,7 @@ const packageInfo = require("./package.json");
 
 function main() {
   program
-    .name(packageInfo.name)
+    .name(packageInfo.name.replace("@tototoshi/", ""))
     .version(packageInfo.version)
     .option(
       "-p, --port <port>",
