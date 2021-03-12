@@ -39,7 +39,7 @@ $ markdown-presentation your_file.md
 
 ## Screenshot
 
-<img width="70%" src="screenshot.png">
+<img width="70%" src="assets/screenshot.png">
 
 ## LICENSE
 
