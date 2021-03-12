@@ -1,11 +1,14 @@
 # markdown-presentation
 
+This tool generates slides for a presentation from Markdown.
+
+## Install
+
 ```console
 $ npm install -g @tototoshi/markdown-presentation
 ```
 
 ## Usage
-
 
 ```console
 Usage: markdown-presentation [options] <filename>
