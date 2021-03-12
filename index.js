@@ -1,22 +1,21 @@
 const fs = require("fs");
 const http = require("http");
 const path = require("path");
-const EventEmitter = require("events");
 const express = require("express");
-
 const program = require("commander");
-
 const webpack = require("webpack");
 const middleware = require("webpack-dev-middleware");
-
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-
-const readFile = require("./serve/readFile");
+const { produce } = require("immer");
+const chokidar = require("chokidar");
+const readFile = require("read-file-utf8");
 
 const app = express();
 const server = http.createServer(app);
+
+const SOCKET_IO_EVENT_CONTENT_CHANGED = "content-changed";
 
 function getBaseConfig() {
   const assetsDir = path.resolve("assets");
@@ -35,6 +34,7 @@ function getBaseConfig() {
     mode: "development",
     entry: "./src/index.ts",
     devtool: "inline-source-map",
+    output: {},
     module: {
       rules: [
         {
@@ -73,20 +73,17 @@ function getBaseConfig() {
 
 function build(outputPath, filename) {
   const baseConfig = getBaseConfig();
-  const config = {
-    ...baseConfig,
-    target: "browserslist",
-    mode: "production",
-    output: {
-      path: outputPath,
-    },
-    plugins: [
-      ...baseConfig.plugins,
+
+  const config = produce(baseConfig, (draft) => {
+    draft.target = "browserslist";
+    draft.mode = "production";
+    draft.output.path = outputPath;
+    draft.plugins.push(
       new webpack.ProvidePlugin({
         __markdown_presentation_source__: require.resolve(filename),
-      }),
-    ],
-  };
+      })
+    );
+  });
 
   webpack(config, (error, stats) => {
     if (error) {
@@ -100,52 +97,40 @@ function build(outputPath, filename) {
 
 function runServer(outputPath, port, filename, writeToDisk) {
   const baseConfig = getBaseConfig();
-  const config = {
-    ...baseConfig,
-    output: {
-      path: outputPath,
-    },
-    plugins: [
-      ...baseConfig.plugins,
+  const config = produce(baseConfig, (draft) => {
+    draft.output.path = outputPath;
+    draft.plugins.push(
       new webpack.EntryPlugin(__dirname, require.resolve("./client/client"), {
         name: undefined,
-      }),
+      })
+    );
+    draft.plugins.push(
       new webpack.ProvidePlugin({
         __markdown_presentation_events__: require.resolve("./serve/events"),
         __markdown_presentation_source__: require.resolve(filename),
-      }),
-    ],
-  };
+      })
+    );
+  });
 
   const compiler = webpack(config);
 
-  const FS_EVENT_CONTENT_CHANGED = "content-changed";
-  const SOCKET_IO_EVENT_CONTENT_CHANGED = "content-changed";
-
-  const fsEvents = new EventEmitter();
-
-  fs.watch(filename, {}, () => {
-    fsEvents.emit(FS_EVENT_CONTENT_CHANGED, readFile(filename));
-  });
-
-  app.use(
-    middleware(compiler, {
-      writeToDisk,
-    })
-  );
+  app.use(middleware(compiler, { writeToDisk }));
 
   const io = require("socket.io")(server);
 
   io.on("connection", (socket) => {
-    const callback = (source) => {
-      socket.emit(SOCKET_IO_EVENT_CONTENT_CHANGED, source);
-    };
+    const watcher = chokidar.watch(filename);
 
-    fsEvents.on(FS_EVENT_CONTENT_CHANGED, callback);
+    const callback = () =>
+      readFile(filename)
+        .then((content) =>
+          socket.emit(SOCKET_IO_EVENT_CONTENT_CHANGED, content)
+        )
+        .catch((e) => console.error(e));
 
-    socket.on("disconnect", () => {
-      fsEvents.off(FS_EVENT_CONTENT_CHANGED, callback);
-    });
+    watcher.on("all", callback);
+
+    socket.on("disconnect", () => watcher.close());
   });
 
   server.listen(port, () => console.log(`listening on port ${port}`));
