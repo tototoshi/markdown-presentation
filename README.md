@@ -20,6 +20,8 @@ Options:
   -h, --help         display help for command
 ```
 
+You can use j/k on the keyboard to move back and forth through the pages of the slide.
+
 ## LICENSE
 
 Apache 2.0
