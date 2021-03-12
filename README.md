@@ -1,6 +1,8 @@
 # markdown-presentation
 
-This tool generates slides for a presentation from Markdown.
+- This tool generates slides for a presentation from Markdown.
+- You can create slides with live preview by starting a development server with the `-serve` option.
+- You can use j/k on the keyboard to move back and forth through the pages of the slide.
 
 ## Install
 
@@ -20,7 +22,6 @@ Options:
   -h, --help         display help for command
 ```
 
-You can use j/k on the keyboard to move back and forth through the pages of the slide.
 
 ## LICENSE
 
