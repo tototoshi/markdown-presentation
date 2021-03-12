@@ -1,140 +1,9 @@
 const fs = require("fs");
-const http = require("http");
 const path = require("path");
-const express = require("express");
 const program = require("commander");
-const webpack = require("webpack");
-const middleware = require("webpack-dev-middleware");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const { produce } = require("immer");
-const chokidar = require("chokidar");
-const readFile = require("read-file-utf8");
 
-const app = express();
-const server = http.createServer(app);
-
-const SOCKET_IO_EVENT_CONTENT_CHANGED = "content-changed";
-
-function getBaseConfig() {
-  const assetsDir = path.resolve("assets");
-  const outDir = path.resolve("dist");
-
-  const copyPlugin = fs.existsSync(assetsDir)
-    ? [new CopyWebpackPlugin({ patterns: [{ from: assetsDir, to: outDir }] })]
-    : [];
-
-  return {
-    context: __dirname,
-    // https://github.com/webpack/webpack-dev-server/issues/2758
-    // https://github.com/pmmmwh/react-refresh-webpack-plugin/blob/main/docs/TROUBLESHOOTING.md#webpack-5-compatibility-issues-with-webpack-dev-server3
-    // In webpack-dev-server@3, there is a bug causing it to mis-judge the runtime environment when the Webpack 5 browserslist target is used.
-    target: "web",
-    mode: "development",
-    entry: "./src/index.ts",
-    devtool: "inline-source-map",
-    output: {},
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          include: path.resolve(__dirname, "src"),
-          use: {
-            loader: "babel-loader",
-            options: {
-              cwd: __dirname,
-              presets: ["@babel/preset-env", "@babel/preset-typescript"],
-            },
-          },
-        },
-        {
-          test: /\.md$/,
-          type: "asset/source",
-        },
-        {
-          test: /\.css$/,
-          use: ["style-loader", "css-loader"],
-        },
-      ],
-    },
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: "./src/index.html",
-      }),
-      new ForkTsCheckerWebpackPlugin(),
-      ...copyPlugin,
-    ],
-    resolve: {
-      extensions: [".tsx", ".ts", ".jsx", ".js"],
-    },
-  };
-}
-
-function build(outputPath, filename) {
-  const baseConfig = getBaseConfig();
-
-  const config = produce(baseConfig, (draft) => {
-    draft.target = "browserslist";
-    draft.mode = "production";
-    draft.output.path = outputPath;
-    draft.plugins.push(
-      new webpack.ProvidePlugin({
-        __markdown_presentation_source__: require.resolve(filename),
-      })
-    );
-  });
-
-  webpack(config, (error, stats) => {
-    if (error) {
-      console.error(error);
-    }
-    if (stats.hasErrors()) {
-      console.log(stats);
-    }
-  });
-}
-
-function runServer(outputPath, port, filename, writeToDisk) {
-  const baseConfig = getBaseConfig();
-  const config = produce(baseConfig, (draft) => {
-    draft.output.path = outputPath;
-    draft.plugins.push(
-      new webpack.EntryPlugin(__dirname, require.resolve("./client/client"), {
-        name: undefined,
-      })
-    );
-    draft.plugins.push(
-      new webpack.ProvidePlugin({
-        __markdown_presentation_events__: require.resolve("./serve/events"),
-        __markdown_presentation_source__: require.resolve(filename),
-      })
-    );
-  });
-
-  const compiler = webpack(config);
-
-  app.use(middleware(compiler, { writeToDisk }));
-
-  const io = require("socket.io")(server);
-
-  io.on("connection", (socket) => {
-    const watcher = chokidar.watch(filename);
-
-    const callback = () =>
-      readFile(filename)
-        .then((content) =>
-          socket.emit(SOCKET_IO_EVENT_CONTENT_CHANGED, content)
-        )
-        .catch((e) => console.error(e));
-
-    watcher.on("all", callback);
-
-    socket.on("disconnect", () => watcher.close());
-  });
-
-  server.listen(port, () => console.log(`listening on port ${port}`));
-}
+const runBuild = require("./build/runBuild");
+const runServer = require("./build/runServer");
 
 const DEFAULT_PORT = 8080;
 
@@ -172,7 +41,7 @@ function main() {
     if (serve) {
       runServer(outputPath, port, filename, write);
     } else {
-      build(outputPath, filename);
+      runBuild(outputPath, filename);
     }
   } else {
     program.help();
