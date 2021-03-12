@@ -5,9 +5,6 @@
 - You can use j/k on the keyboard to move back and forth through the pages of the slide.
 
 
-![image](screenshot.png)
-
-
 ## Install
 
 ```console
@@ -25,6 +22,25 @@ Options:
   -s, --serve        Run dev server
   -h, --help         display help for command
 ```
+
+## Example
+
+- Start the development server on port 3000 and write the generated files to disk.
+
+```console
+$ markdown-presentation --serve -p 3000 --write your_file.md
+```
+
+- Generate slides from markdowns, and output the generated files in the dist/ directory
+
+```console
+$ markdown-presentation your_file.md
+```
+
+## Screenshot
+
+<img width="70%" src="screenshot.png">
+
 
 ## LICENSE
 
