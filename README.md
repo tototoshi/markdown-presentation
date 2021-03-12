@@ -1,12 +1,14 @@
 # markdown-presentation
 
-https://tototoshi.github.io/markdown-presentation/
+```console
+$ npm install -g @tototoshi/markdown-presentation
+```
 
 ## Usage
 
-Usage: markdown-presentation [options] <filename>
 
-```
+```console
+Usage: markdown-presentation [options] <filename>
 Options:
   -V, --version      output the version number
   -p, --port <port>  The port the server will listen on (default: 8080)
