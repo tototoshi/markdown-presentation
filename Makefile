@@ -11,7 +11,7 @@ install:
 	npm install
 
 serve:
-	$(CMD) $(SOURCE)
+	$(CMD) --serve $(SOURCE)
 
 clean:
 	rm -rf dist/
