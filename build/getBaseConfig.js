@@ -8,10 +8,13 @@ module.exports = function getBaseConfig() {
   const context = path.resolve(__dirname, "..");
 
   const assetsDir = path.resolve("assets");
-  const outDir = path.resolve("dist");
 
   const copyPlugin = fs.existsSync(assetsDir)
-    ? [new CopyWebpackPlugin({ patterns: [{ from: assetsDir, to: outDir }] })]
+    ? [
+        new CopyWebpackPlugin({
+          patterns: [{ from: "assets/**/*" }],
+        }),
+      ]
     : [];
 
   return {
