@@ -4,6 +4,7 @@ const path = require("path");
 
 const spawn = require("./util/spawn");
 const question = require("./util/question");
+const confirm = require("./util/confirm");
 const writeFileUtf8 = require("write-file-utf8");
 
 const root = path.resolve(__dirname, "..");

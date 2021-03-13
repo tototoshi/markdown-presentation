@@ -1,5 +1,5 @@
 const question = require("./question");
 
-function confirm(message) {
+module.exports = function confirm(message) {
   return question(message).then((value) => /^[yY]$/.test(value));
-}
+};
