@@ -62,7 +62,7 @@ function renderPage(content: string) {
   const sections = parse(content);
 
   marked.setOptions({
-    langPrefix: "",
+    langPrefix: "hljs ",
     highlight: (code, lang) => hljs.highlightAuto(code, [lang]).value,
   });
 

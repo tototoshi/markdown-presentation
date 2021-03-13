@@ -15,8 +15,14 @@ h2 {
   font-size: 1.8rem;
 }
 
+code {
+  background-color: #f8f8f8;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+}
+
 pre > code {
-  font-size: 0.65rem;
+  font-size: 0.8rem;
 }
 
 a:link,
