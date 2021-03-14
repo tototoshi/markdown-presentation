@@ -2,6 +2,7 @@
 
 const path = require("path");
 
+const child_process = require("child_process");
 const spawn = require("./util/spawn");
 const question = require("./util/question");
 const confirm = require("./util/confirm");
@@ -13,6 +14,12 @@ const packageInfo = require(path.resolve(root, "package.json"));
 
 async function main() {
   process.chdir(root);
+
+  const diff = child_process.execSync("git status --porcelain");
+  if (diff.length > 0) {
+    console.error("Workspace is not clean");
+    process.exit(1);
+  }
 
   const version = await question("Please input the next version: ");
 
