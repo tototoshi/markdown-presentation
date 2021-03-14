@@ -31,10 +31,10 @@ Options:
 $ markdown-presentation --serve -p 3000 --write your_file.md
 ```
 
-- Generate slides from markdowns, and output the generated files in the dist/ directory
+- Generate slides from markdowns, and output the generated files in the docs/ directory
 
 ```console
-$ markdown-presentation your_file.md
+$ markdown-presentation --out docs your_file.md
 ```
 
 ## Screenshot

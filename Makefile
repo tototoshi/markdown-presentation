@@ -4,8 +4,7 @@ SOURCE := README.md
 .PHONY: install build serve clean fmt
 
 build:
-	$(CMD) --write $(SOURCE)
-	rsync -av ./dist/ ./docs/
+	$(CMD) --out docs $(SOURCE)
 
 install:
 	npm install
