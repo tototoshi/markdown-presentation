@@ -21,7 +21,9 @@ async function main() {
     process.exit(1);
   }
 
-  const version = await question("Please input the next version: ");
+  const version = await question(
+    `Please input the next version (current: ${packageInfo.version}): `
+  );
 
   console.log(`Will release version ${version}`);
 
