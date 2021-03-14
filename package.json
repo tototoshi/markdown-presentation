@@ -35,6 +35,7 @@
   "devDependencies": {
     "apache2-license-checker": "^1.0.0",
     "prettier": "^2.2.1",
+    "prompts": "^2.4.0",
     "write-file-utf8": "^2.0.1"
   },
   "browserslist": [
