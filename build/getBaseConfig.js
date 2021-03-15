@@ -7,16 +7,6 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 module.exports = function getBaseConfig() {
   const context = path.resolve(__dirname, "..");
 
-  const assetsDir = path.resolve("assets");
-
-  const copyPlugin = fs.existsSync(assetsDir)
-    ? [
-        new CopyWebpackPlugin({
-          patterns: [{ from: "assets/**/*" }],
-        }),
-      ]
-    : [];
-
   return {
     context,
     // https://github.com/webpack/webpack-dev-server/issues/2758
@@ -55,7 +45,6 @@ module.exports = function getBaseConfig() {
         template: "./src/index.html",
       }),
       new ForkTsCheckerWebpackPlugin(),
-      ...copyPlugin,
     ],
     resolve: {
       extensions: [".tsx", ".ts", ".jsx", ".js"],

@@ -6,9 +6,9 @@ const express = require("express");
 
 const getBaseConfig = require("./getBaseConfig");
 const createSocket = require("./createSocket");
+const AssetCopyWebpackPlugin = require("./AssetCopyWebpackPlugin");
 
-function getServerConfig(option) {
-  const { outputPath, filename } = option;
+function getServerConfig(cwd, outputPath, filename) {
   const baseConfig = getBaseConfig();
   return produce(baseConfig, (draft) => {
     draft.output.path = outputPath;
@@ -23,13 +23,20 @@ function getServerConfig(option) {
         __markdown_presentation_source__: require.resolve(filename),
       })
     );
+    draft.plugins.push(new AssetCopyWebpackPlugin(cwd, outputPath));
   });
 }
 
-module.exports = function runServer(outputPath, port, filename, writeToDisk) {
+module.exports = function runServer(
+  cwd,
+  outputPath,
+  port,
+  filename,
+  writeToDisk
+) {
   const app = express();
   const server = http.createServer(app);
-  const compiler = webpack(getServerConfig({ outputPath, filename }));
+  const compiler = webpack(getServerConfig(cwd, outputPath, filename));
 
   app.use(middleware(compiler, { writeToDisk }));
 

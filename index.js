@@ -40,9 +40,9 @@ function main() {
     }
 
     if (serve) {
-      runServer(outputPath, port, filename, write);
+      runServer(cwd, outputPath, port, filename, write);
     } else {
-      runBuild(outputPath, filename);
+      runBuild(cwd, outputPath, filename);
     }
   } else {
     program.help();
