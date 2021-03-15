@@ -10,6 +10,12 @@
 $ npm install -g @tototoshi/markdown-presentation
 ```
 
+or
+
+```console
+$ npm install --save-dev @tototoshi/markdown-presentation
+```
+
 ## Usage
 
 ```console
@@ -24,7 +30,29 @@ Options:
   -h, --help         display help for command
 ```
 
+## Directory Structure
+
+The default directory structure for using this tool is as follows.
+
+```plaintext
+my_project
+├── assets
+│   └── icon.jpg
+├── dist
+│   ├── assets
+│   │   └── icon.jpg
+│   ├── index.html
+│   └── main.js
+└── index.md
+```
+
+- Put *.md with any name you like
+- Write the generated files to `dist/`
+- Place asset files like images in `assets/`
+  - The asset files will be copied to the `dist/` directory
+
 ## Example
+
 
 - Start the development server on port 3000 and write the generated files to disk.
 
@@ -37,6 +65,7 @@ $ markdown-presentation --serve -p 3000 --write your_file.md
 ```console
 $ markdown-presentation --out docs your_file.md
 ```
+
 
 ## Screenshot
 
