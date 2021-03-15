@@ -34,10 +34,7 @@
   },
   "devDependencies": {
     "apache2-license-checker": "^1.0.0",
-    "prettier": "^2.2.1",
-    "prompts": "^2.4.0",
-    "shelljs": "^0.8.4",
-    "write-file-utf8": "^2.0.1"
+    "prettier": "^2.2.1"
   },
   "browserslist": [
     "defaults"
