@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 const path = require("path");
+const shell = require("shelljs");
 
-const child_process = require("child_process");
-const spawn = require("./util/spawn");
 const prompts = require("prompts");
 const writeFileUtf8 = require("write-file-utf8");
 
@@ -12,7 +11,7 @@ const packageJson = path.resolve(root, "package.json");
 const packageInfo = require(path.resolve(root, "package.json"));
 
 function checkIfWorkingDirectoryIsClean() {
-  const diff = child_process.execSync("git status --porcelain");
+  const diff = shell.exec("git status --porcelain").stdout;
   if (diff.length > 0) {
     console.error("Workspace is not clean");
     process.exit(1);
@@ -26,7 +25,7 @@ async function updatePackgeJson(version) {
     { encoding: "utf8" }
   );
 
-  await spawn("npm", ["install"]);
+  shell.exec("npm install");
 }
 
 async function commit(version) {
@@ -40,9 +39,9 @@ async function commit(version) {
     return;
   }
 
-  await spawn("git", ["add", "package.json", "package-lock.json"]);
-  await spawn("git", ["commit", "-m", `v${version}`]);
-  await spawn("git", ["tag", `v${version}`]);
+  shell.exec("git add package.json package-lock.json");
+  shell.exec(`git commit -m v${version}`);
+  shell.exec(`git tag v${version}`);
 }
 
 async function publish() {
@@ -56,7 +55,7 @@ async function publish() {
     return;
   }
 
-  await spawn("npm", ["publish", "--access", "public"]);
+  shell.exec("npm publish --access public");
 }
 
 async function pushCommitAndTag() {
@@ -70,8 +69,8 @@ async function pushCommitAndTag() {
     return;
   }
 
-  await spawn("git", ["push"]);
-  await spawn("git", ["push", "--tags"]);
+  shell.exec("git push");
+  shell.exec("git push --tags");
 }
 
 async function main() {
