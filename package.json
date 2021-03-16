@@ -33,7 +33,9 @@
     "webpack-dev-server": "^3.11.2"
   },
   "devDependencies": {
+    "@types/mousetrap": "^1.6.5",
     "apache2-license-checker": "^1.0.0",
+    "mousetrap": "^1.6.5",
     "prettier": "^2.2.1"
   },
   "browserslist": [
