@@ -4,6 +4,13 @@
   "bin": {
     "markdown-presentation": "bin/markdown-presentation.js"
   },
+  "files": [
+    "bin",
+    "build",
+    "client",
+    "src",
+    "theme"
+  ],
   "dependencies": {
     "@babel/core": "^7.13.10",
     "@babel/preset-env": "^7.13.10",
