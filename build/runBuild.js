@@ -3,14 +3,16 @@ const { produce } = require("immer");
 
 const getBaseConfig = require("./getBaseConfig");
 const AssetCopyWebpackPlugin = require("./AssetCopyWebpackPlugin");
+const ThemeWebpackPlugin = require("./ThemeWebpackPlugin");
 
-module.exports = function build(cwd, outputPath, filename) {
+module.exports = function build(cwd, outputPath, filename, theme) {
   const baseConfig = getBaseConfig();
 
   const config = produce(baseConfig, (draft) => {
     draft.target = "browserslist";
     draft.mode = "production";
     draft.output.path = outputPath;
+    draft.plugins.push(new ThemeWebpackPlugin({ name: theme }));
     draft.plugins.push(
       new webpack.ProvidePlugin({
         __markdown_presentation_source__: require.resolve(filename),

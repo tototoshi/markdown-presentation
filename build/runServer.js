@@ -7,14 +7,20 @@ const express = require("express");
 const getBaseConfig = require("./getBaseConfig");
 const createSocket = require("./createSocket");
 const AssetCopyWebpackPlugin = require("./AssetCopyWebpackPlugin");
+const ThemeWebpackPlugin = require("./ThemeWebpackPlugin");
 
-function getServerConfig(cwd, outputPath, filename) {
+function getServerConfig(cwd, outputPath, filename, theme) {
   const baseConfig = getBaseConfig();
   return produce(baseConfig, (draft) => {
     draft.output.path = outputPath;
     draft.plugins.push(
       new webpack.EntryPlugin(__dirname, require.resolve("../client/client"), {
         name: undefined,
+      })
+    );
+    draft.plugins.push(
+      new ThemeWebpackPlugin({
+        name: theme,
       })
     );
     draft.plugins.push(
@@ -32,11 +38,12 @@ module.exports = function runServer(
   outputPath,
   port,
   filename,
-  writeToDisk
+  writeToDisk,
+  theme
 ) {
   const app = express();
   const server = http.createServer(app);
-  const compiler = webpack(getServerConfig(cwd, outputPath, filename));
+  const compiler = webpack(getServerConfig(cwd, outputPath, filename, theme));
 
   app.use(middleware(compiler, { writeToDisk }));
 

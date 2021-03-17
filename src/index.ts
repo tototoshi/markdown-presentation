@@ -1,4 +1,3 @@
-import "./app.css";
 import "highlight.js/styles/github.css";
 
 import EventEmitter from "events";
