@@ -1,6 +1,6 @@
 {
   "name": "@tototoshi/markdown-presentation",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "bin": {
     "markdown-presentation": "bin/markdown-presentation.js"
   },
