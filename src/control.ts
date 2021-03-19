@@ -29,6 +29,8 @@ function goToPage(n: number): void {
 }
 
 function init() {
+  setCurrentPage();
+
   mousetrap.bind("home", () => goToPage(getMinPage()));
   mousetrap.bind("end", () => goToPage(getMaxPage()));
   mousetrap.bind("j", () => goToPage(Math.min(getMaxPage(), currentPage + 1)));
