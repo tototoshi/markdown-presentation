@@ -1,9 +1,12 @@
 import marked from "marked";
 import hljs from "highlight.js";
+import emoji from "node-emoji";
 import parse from "./parse";
 
 export default function render(source: string): string {
-  const sections = parse(source);
+  const sections = parse(
+    source.replace(/(:.*:)/g, (match) => emoji.emojify(match))
+  );
 
   marked.setOptions({
     langPrefix: "hljs ",
