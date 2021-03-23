@@ -4,13 +4,13 @@ SOURCE := README.md
 .PHONY: install build serve clean fmt
 
 build:
-	$(CMD) --out docs --theme dark $(SOURCE)
+	$(CMD) --out docs --theme blue $(SOURCE)
 
 install:
 	npm install
 
 serve:
-	$(CMD) --serve --theme dark $(SOURCE)
+	$(CMD) --serve --theme blue $(SOURCE)
 
 clean:
 	rm -rf dist/

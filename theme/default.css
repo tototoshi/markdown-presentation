@@ -2,9 +2,8 @@ html,
 body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
     sans-serif, Apple Color Emoji, Segoe UI Emoji;
-
   font-size: 32px;
-  width: 95%;
+  width: 1080px;
   margin: 0 auto;
   height: 100%;
 }
@@ -25,7 +24,7 @@ code {
 }
 
 pre > code {
-  font-size: 0.8rem;
+  font-size: 0.6rem;
 }
 
 a:link,
@@ -38,6 +37,8 @@ a:hover {
 }
 
 .page {
+  padding-top: 3em;
+  box-sizing: border-box;
   width: 100%;
   min-height: 100%;
   height: 100%;

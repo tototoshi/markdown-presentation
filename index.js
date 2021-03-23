@@ -25,7 +25,7 @@ function main() {
     .option("-s, --serve", "Run the dev server")
     .option(
       "-t, --theme <theme>",
-      "Specify the name of theme <default|dark>",
+      "Specify the name of theme <default|dark|blue>",
       "default"
     )
     .arguments("<filename>")

@@ -1,0 +1,23 @@
+body {
+  width: 1080px;
+  background-color: rgb(32, 110, 171);
+  color: #fff;
+}
+
+a:link,
+a:visited,
+a:hover {
+  font-weight: bold;
+  color: #fff;
+  text-decoration: underline;
+}
+
+div.page {
+  padding-top: 3em;
+  box-sizing: border-box;
+}
+
+code {
+  color: rgb(32, 110, 171);
+  font-size: 0.8em;
+}
