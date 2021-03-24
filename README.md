@@ -1,6 +1,7 @@
 # markdown-presentation
 
-https://tototoshi.github.io/markdown-presentation
+- Repository: [tototoshi/markdown-presentation](https://github.com/tototoshi/markdown-presentation)
+- Demo: [GitHub Pages](https://tototoshi.github.io/markdown-presentation)
 
 ## What is this?
 
