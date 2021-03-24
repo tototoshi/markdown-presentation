@@ -27,15 +27,6 @@ pre > code {
   font-size: 0.6rem;
 }
 
-a:link,
-a:visited {
-  color: #12a0ff;
-  text-decoration: none;
-}
-a:hover {
-  color: #ff1385;
-}
-
 .page {
   padding-top: 3em;
   box-sizing: border-box;
