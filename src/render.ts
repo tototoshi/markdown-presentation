@@ -16,7 +16,7 @@ export default function render(source: string): string {
   return sections
     .map(
       (section) =>
-        `<div class="page">${marked(section)}</div><div class="new-page"/>`
+        `<div class="page">${marked(section)}</div><div class="new-page"></div>`
     )
     .join("");
 }
