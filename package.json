@@ -20,7 +20,7 @@
     "@types/marked": "^2.0.0",
     "@types/mousetrap": "^1.6.5",
     "@types/node-emoji": "^1.8.1",
-    "@types/socket.io-client": "^1.4.35",
+    "@types/socket.io-client": "^3.0.0",
     "babel-loader": "^8.2.2",
     "chokidar": "^3.5.1",
     "commander": "^7.1.0",
