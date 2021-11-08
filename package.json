@@ -34,7 +34,7 @@
     "html-webpack-plugin": "^5.3.1",
     "htmlparser2": "^7.0.0",
     "immer": "^9.0.1",
-    "marked": "^3.0.0",
+    "marked": "^4.0.0",
     "mousetrap": "^1.6.5",
     "node-emoji": "^1.10.0",
     "read-file-utf8": "^2.0.4",
