@@ -26,6 +26,16 @@ function goToPage(n: number): void {
   window.scroll({ top: n * windowHeight, behavior: "smooth" });
   location.hash = "#" + n;
   currentPage = n;
+
+  if (typeof __markdown_presentation_events__ !== "undefined") {
+    __markdown_presentation_events__.emit("page-changed", n);
+  }
+}
+
+function syncPage(n: number): void {
+  window.scroll({ top: n * windowHeight, behavior: "smooth" });
+  location.hash = "#" + n;
+  currentPage = n;
 }
 
 function goToHome(): void {
@@ -57,4 +67,4 @@ function init() {
   mousetrap.bind("up", goToPreviousPage);
 }
 
-export default { init, setCurrentPage };
+export default { init, setCurrentPage, syncPage };
