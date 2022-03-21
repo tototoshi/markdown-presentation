@@ -1,6 +1,6 @@
 import { marked } from "marked";
+import { emojiExtension } from "./markedExtensions";
 import hljs from "highlight.js";
-import emoji from "node-emoji";
 import sections from "./sections";
 
 export default function render(source: string): string {
@@ -9,7 +9,7 @@ export default function render(source: string): string {
     highlight: (code, lang) => hljs.highlightAuto(code, [lang]).value,
   });
 
-  return sections(
-    marked(source.replace(/(:.*:)/g, (match) => emoji.emojify(match)))
-  );
+  marked.use({ extensions: [emojiExtension] });
+
+  return sections(marked(source));
 }
