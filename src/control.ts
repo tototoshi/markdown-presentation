@@ -28,13 +28,33 @@ function goToPage(n: number): void {
   currentPage = n;
 }
 
+function goToHome(): void {
+  goToPage(getMinPage());
+}
+
+function goToEnd(): void {
+  goToPage(getMaxPage());
+}
+
+function goToNextPage(): void {
+  goToPage(Math.min(getMaxPage(), currentPage + 1));
+}
+
+function goToPreviousPage(): void {
+  goToPage(Math.max(getMinPage(), currentPage - 1));
+}
+
 function init() {
   setCurrentPage();
 
-  mousetrap.bind("home", () => goToPage(getMinPage()));
-  mousetrap.bind("end", () => goToPage(getMaxPage()));
-  mousetrap.bind("j", () => goToPage(Math.min(getMaxPage(), currentPage + 1)));
-  mousetrap.bind("k", () => goToPage(Math.max(getMinPage(), currentPage - 1)));
+  mousetrap.bind("home", goToHome);
+  mousetrap.bind("end", goToEnd);
+  mousetrap.bind("j", goToNextPage);
+  mousetrap.bind("right", goToNextPage);
+  mousetrap.bind("down", goToNextPage);
+  mousetrap.bind("k", goToPreviousPage);
+  mousetrap.bind("left", goToPreviousPage);
+  mousetrap.bind("up", goToPreviousPage);
 }
 
 export default { init, setCurrentPage };
