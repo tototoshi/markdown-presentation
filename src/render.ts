@@ -1,15 +1,20 @@
 import { marked } from "marked";
-import { emojiExtension } from "./markedExtensions";
+import { emojiExtension, speakerNoteExtension } from "./markedExtensions";
 import hljs from "highlight.js";
 import sections from "./sections";
 
-export default function render(source: string): string {
+export default function render(source: string, withNote: boolean): string {
   marked.setOptions({
     langPrefix: "hljs ",
     highlight: (code, lang) => hljs.highlightAuto(code, [lang]).value,
   });
 
-  marked.use({ extensions: [emojiExtension] });
+  var extensions = [emojiExtension];
+  if (withNote) {
+    extensions = [...extensions, speakerNoteExtension];
+  }
+
+  marked.use({ extensions });
 
   return sections(marked(source));
 }

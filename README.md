@@ -57,6 +57,22 @@ my_project
 - Place asset files like images in `assets/`
   - The asset files will be copied to the `dist/` directory
 
+## Speaker notes
+
+- [Show speaker notes](?note=1#5)
+
+```html
+<!-- NOTE
+This is shown as a speaker note.
+Speaker notes are shown when you open a page with `?note=1`
+-->
+```
+
+<!-- NOTE
+This is shown as a speaker note.
+Speaker notes are shown when you open a page with `?note=1`
+-->
+
 ## Example
 
 - Start the development server on port 3000 and write the generated files to disk.

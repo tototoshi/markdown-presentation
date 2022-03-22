@@ -19,4 +19,23 @@ const emojiExtension = {
   },
 };
 
-export { emojiExtension };
+const speakerNoteExtension = {
+  name: "speakerNote",
+  level: "block",
+  start(src: string): number {
+    return src.match(/[<]!-- NOTE\s*\n/)?.index || -1;
+  },
+  tokenizer(src: string, token: marked.Token[]) {
+    const rule = /^([<]!-- NOTE\s*\n?)((?:.|\n)*?)(\n?-->)(?:\n|$)/;
+    const match = rule.exec(src);
+    if (match !== null) {
+      return { type: "speakerNote", raw: match[0], note: match[2] };
+    }
+  },
+  renderer(token: marked.Tokens.Generic) {
+    console.log(token);
+    return `<pre class="note">${token.note}</pre>`;
+  },
+};
+
+export { emojiExtension, speakerNoteExtension };
