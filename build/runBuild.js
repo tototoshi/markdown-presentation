@@ -4,8 +4,9 @@ const { produce } = require("immer");
 const getBaseConfig = require("./getBaseConfig");
 const AssetCopyWebpackPlugin = require("./AssetCopyWebpackPlugin");
 const ThemeWebpackPlugin = require("./ThemeWebpackPlugin");
+const HighlightJSThemeWebpackPlugin = require("./HighlightJSThemeWebpackPlugin");
 
-module.exports = function build(cwd, outputPath, filename, theme) {
+module.exports = function build(cwd, outputPath, filename, theme, highlight) {
   const baseConfig = getBaseConfig();
 
   const config = produce(baseConfig, (draft) => {
@@ -13,6 +14,7 @@ module.exports = function build(cwd, outputPath, filename, theme) {
     draft.mode = "production";
     draft.output.path = outputPath;
     draft.plugins.push(new ThemeWebpackPlugin({ name: theme }));
+    draft.plugins.push(new HighlightJSThemeWebpackPlugin({ name: highlight }));
     draft.plugins.push(
       new webpack.ProvidePlugin({
         __markdown_presentation_source__: require.resolve(filename),

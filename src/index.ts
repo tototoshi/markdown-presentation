@@ -1,5 +1,3 @@
-import "highlight.js/styles/github.css";
-
 import control from "./control";
 import render from "./render";
 

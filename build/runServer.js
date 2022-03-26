@@ -8,8 +8,9 @@ const getBaseConfig = require("./getBaseConfig");
 const createSocket = require("./createSocket");
 const AssetCopyWebpackPlugin = require("./AssetCopyWebpackPlugin");
 const ThemeWebpackPlugin = require("./ThemeWebpackPlugin");
+const HighlightJSThemeWebpackPlugin = require("./HighlightJSThemeWebpackPlugin");
 
-function getServerConfig(cwd, outputPath, filename, theme) {
+function getServerConfig(cwd, outputPath, filename, theme, highlight) {
   const baseConfig = getBaseConfig();
   return produce(baseConfig, (draft) => {
     draft.output.path = outputPath;
@@ -21,6 +22,11 @@ function getServerConfig(cwd, outputPath, filename, theme) {
     draft.plugins.push(
       new ThemeWebpackPlugin({
         name: theme,
+      })
+    );
+    draft.plugins.push(
+      new HighlightJSThemeWebpackPlugin({
+        name: highlight,
       })
     );
     draft.plugins.push(
@@ -39,11 +45,14 @@ module.exports = function runServer(
   port,
   filename,
   writeToDisk,
-  theme
+  theme,
+  highlight
 ) {
   const app = express();
   const server = http.createServer(app);
-  const compiler = webpack(getServerConfig(cwd, outputPath, filename, theme));
+  const compiler = webpack(
+    getServerConfig(cwd, outputPath, filename, theme, highlight)
+  );
 
   app.use(middleware(compiler, { writeToDisk }));
 

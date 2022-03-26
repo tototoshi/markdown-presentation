@@ -28,6 +28,11 @@ function main() {
       "Specify the name of theme <default|dark|blue>",
       "default"
     )
+    .option(
+      "--highlight <highlight>",
+      "Specify the name of highlight.js theme",
+      "default"
+    )
     .arguments("<filename>")
     .parse(process.argv);
   const options = program.opts();
@@ -36,6 +41,7 @@ function main() {
   const write = options.write || false;
   const serve = options.serve || false;
   const theme = options.theme;
+  const highlight = options.highlight;
 
   if (program.args.length === 1) {
     const filename = path.resolve(cwd, program.args[0]);
@@ -46,9 +52,9 @@ function main() {
     }
 
     if (serve) {
-      runServer(cwd, outputPath, port, filename, write, theme);
+      runServer(cwd, outputPath, port, filename, write, theme, highlight);
     } else {
-      runBuild(cwd, outputPath, filename, theme);
+      runBuild(cwd, outputPath, filename, theme, highlight);
     }
   } else {
     program.help();
