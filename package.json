@@ -32,7 +32,7 @@
     "fork-ts-checker-webpack-plugin": "^7.0.0",
     "highlight.js": "^11.0.0",
     "html-webpack-plugin": "^5.3.1",
-    "htmlparser2": "^7.0.0",
+    "htmlparser2": "^8.0.1",
     "immer": "^9.0.1",
     "marked": "^4.0.0",
     "mousetrap": "^1.6.5",
